@@ -20,12 +20,13 @@ class Welcome_model extends CI_Model{
 	public function getCurrency(int $max_currency=1): ?array
 	{
 		$query = $this->db->query('SELECT name, valCurrency, dateTim FROM `rates` order by id DESC LIMIT '.$max_currency.'');
+		///SELECT name, valCurrency, dateTim FROM rates GROUP BY name ORDER BY dateTim DESC
 		return $query->result_array();		
 	}
 
 	public function setCurrency(array $newCurrency) {
-		if($this->db->query("INSERT INTO `rates` (name, valCurrency, dateTim) 
-			VALUES (".$this->db->escape($newCurrency['name']).", ".$newCurrency['valCurrency']." , CURRENT_DATE() );") );
+		if($this->db->query("INSERT IGNORE INTO `rates` (name, valCurrency, dateTim) 
+			VALUES (".$this->db->escape($newCurrency['name']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") );
 		{
 			$this->db->affected_rows();
 		}
