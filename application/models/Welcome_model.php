@@ -24,9 +24,13 @@ class Welcome_model extends CI_Model{
 	}
 
 	public function setCurrency(array $newCurrency) {
-		$this->db->query("INSERT INTO `rates` (name, valCurrency, dateTim) 
-			VALUES (".$this->db->escape($newCurrency['name']).", ".$newCurrency['valCurrency']." , CURRENT_DATE() );");
-		$this->db->affected_rows();
+		if($this->db->query("INSERT INTO `rates` (name, valCurrency, dateTim) 
+			VALUES (".$this->db->escape($newCurrency['name']).", ".$newCurrency['valCurrency']." , CURRENT_DATE() );") );
+		{
+			$this->db->affected_rows();
+		}
+		
+		
 	}
 	
 	/*
