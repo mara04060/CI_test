@@ -101,7 +101,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<?php 
 
 					foreach ($content as $key => $value) {
-						echo "<code>".$value['name']." =  1 : ".$value['valCurrency']." - = -".$value['dateTim']."</code>\n";  
+						echo "<code>".$value['dateTim']." -> ".$value['name']." =  1 : ".$value['valCurrency']."</code>\n";
 					}
 			?>
 		</div>

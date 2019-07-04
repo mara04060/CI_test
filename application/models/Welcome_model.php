@@ -19,8 +19,8 @@ class Welcome_model extends CI_Model{
 	/* Function work Database Currency */
 	public function getCurrency(int $max_currency=1): ?array
 	{
-		$query = $this->db->query('SELECT name, valCurrency, dateTim FROM `rates` order by id DESC LIMIT '.$max_currency.'');
-		///SELECT name, valCurrency, dateTim FROM rates GROUP BY name ORDER BY dateTim DESC
+		$query = $this->db->query('select name, valCurrency, max(dateTim) as dateTim from rates group by name order by name DESC LIMIT '.$max_currency.'');
+
 		return $query->result_array();		
 	}
 
