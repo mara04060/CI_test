@@ -20,7 +20,6 @@ class Welcome_model extends CI_Model{
 	public function getCurrency(int $max_currency=1): ?array
 	{
 		$query = $this->db->query('select name, valCurrency, max(dateTim) as dateTim from rates group by name order by name DESC LIMIT '.$max_currency.'');
-
 		return $query->result_array();		
 	}
 
@@ -55,5 +54,18 @@ class Welcome_model extends CI_Model{
  			$this->setCurrency($data);
  		}
  	}
+public function getContentInJSON($json): ?array
+	{
+		$content=array();
+		//if (isset($json)){ return NULL; }
+		foreach ($json as $key => $value) {
+ 			$data["name"]=$value["ccy"];
+ 			$data["valCurrency"]=$value["buy"];
+ 			$data['dateTim']=date("Y-m-d");
+ 			$content[]=$data;
+ 		}	
+ 		return $content;	 
+ 	}
+
 		
 }

@@ -17,6 +17,17 @@ class Welcome extends CI_Controller {
 	 * So any other public methods not prefixed with an underscore will
 	 * map to /index.php/welcome/<method_name>
 	 * @see https://codeigniter.com/user_guide/general/urls.html
+	 Примечние Автора:
+	 Т.к. в задаче скзано :
+	 При заходе на главную страницу как-то вывести текущий курс валют.
+	 То выведем курс из полученного JSON зпроса (он-то уже получен)
+	 просто выведем его в необходимом формате.
+	 Хотя можно было-бы из БД, н всяк случай оставил строку Read in DataBase 
+	 тогда не требуется обращаться к API каждый раз и дергать ПриватБанк
+	 Можно было-бы добвить CRON который переодически дергал АПИ ПриватБанка
+	 и данные курсов валют в БД былибы всегда актуальны. В этом случае просто убрать
+	 с главной стрницы обрщение к АПИ.(но добавить обращение к БД откуда брть ПОСЛЕДНИЕ 
+	 данные курсов валют).
 	 */
 	
 	public function __construct()
@@ -31,7 +42,9 @@ class Welcome extends CI_Controller {
 		/* */
 		if(empty( $data['content'] = $this->welcome_model->getCache('currency') ))
 		{
-			$data['content']=$this->welcome_model->getCurrency(2);
+			//$data['content']=$this->welcome_model->getCurrency(2);        // Read in DataBase 
+			$json=$this->welcome_model->getAPIcurrency();					// Read in JSON
+			$data['content']=$this->welcome_model->getContentInJSON($json); // Read in JSON
 			$this->welcome_model->setCache('currency', $data['content']);
 		}
 

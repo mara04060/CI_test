@@ -98,7 +98,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<p>Currency of <strong><?=date("d-m-y");?></strong></p>
 			<code>
 				<?php 				
-				
 				foreach ($content as $key => $value) 
 				{
 						echo " ".$value['name']." = 1 : ".$value['valCurrency']." - ".$value['dateTim']."<br />";
