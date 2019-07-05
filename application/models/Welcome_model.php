@@ -24,8 +24,8 @@ class Welcome_model extends CI_Model{
 	}
 
 	public function setCurrency(array $newCurrency) {
-		if($this->db->query("INSERT IGNORE INTO `rates` (name, valCurrency, dateTim) 
-			VALUES (".$this->db->escape($newCurrency['name']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") );
+		if($this->db->query("INSERT IGNORE INTO `rates` (name, nameBase, valCurrency, dateTim) 
+			VALUES (".$this->db->escape($newCurrency['name']).", ".$this->db->escape($newCurrency['nameBase']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") );
 		{
 			$this->db->affected_rows();
 		}
@@ -50,6 +50,7 @@ class Welcome_model extends CI_Model{
  	{
  		foreach ($json as $key => $value) {
  			$data["name"]=$value["ccy"];
+ 			$data["nameBase"]=$value["base_ccy"];
  			$data["valCurrency"]=$value["buy"];
  			$this->setCurrency($data);
  		}
@@ -60,6 +61,7 @@ public function getContentInJSON($json): ?array
 		//if (isset($json)){ return NULL; }
 		foreach ($json as $key => $value) {
  			$data["name"]=$value["ccy"];
+ 			$data["nameBase"]=$value["base_ccy"];
  			$data["valCurrency"]=$value["buy"];
  			$data['dateTim']=date("Y-m-d");
  			$content[]=$data;

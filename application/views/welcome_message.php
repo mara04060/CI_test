@@ -100,7 +100,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php 				
 				foreach ($content as $key => $value) 
 				{
-						echo " ".$value['name']." = 1 : ".$value['valCurrency']." - ".$value['dateTim']."<br />";
+						echo " ".$value['name']." = 1 : ".$value['valCurrency']."(".$value['nameBase'].") - ".$value['dateTim']."<br />";
 				}
 				 ?>
 				 <strong><a href="/history"> Next Currency ...</a></strong>
