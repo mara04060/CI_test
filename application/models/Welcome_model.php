@@ -17,20 +17,24 @@ class Welcome_model extends CI_Model{
 	}
 	
 	/* Function work Database Currency */
-	public function getCurrency(int $max_currency=1): ?array
+	public function getCurrency(): ?array
 	{
-		$query = $this->db->query('select name, valCurrency, max(dateTim) as dateTim from rates group by name order by name DESC LIMIT '.$max_currency.'');
+		$query = $this->db->query('SELECT x.`name`, x.`nameBase`, x.`valCurrency`, x.`dateTim` FROM rates x INNER JOIN
+			(SELECT name, max(dateTim) as dateTim FROM rates GROUP BY name ) y 
+		ON (y.name = x.name) AND ( y.dateTim= x.dateTim) ORDER BY x.`name` DESC LIMIT 4');
 		return $query->result_array();		
 	}
-
-	public function setCurrency(array $newCurrency) {
-		if($this->db->query("INSERT IGNORE INTO `rates` (name, nameBase, valCurrency, dateTim) 
-			VALUES (".$this->db->escape($newCurrency['name']).", ".$this->db->escape($newCurrency['nameBase']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") );
+	public function setCurrency(array $newCurrency) 
+	{
+		$query=$this->db->query("select name from rates where name=".$this->db->escape($newCurrency['name'])." AND nameBase=".$this->db->escape($newCurrency['nameBase'])." AND valCurrency=".$newCurrency['valCurrency']." AND dateTim= CURRENT_TIME() ;");
+		if(empty( $query->result_array() ) )
 		{
+			if($this->db->query("INSERT IGNORE INTO `rates` (name, nameBase, valCurrency, dateTim) 
+			VALUES (".$this->db->escape($newCurrency['name']).", ".$this->db->escape($newCurrency['nameBase']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") )
+			{
 			$this->db->affected_rows();
+			}
 		}
-		
-		
 	}
 	
 	/*
@@ -39,7 +43,10 @@ class Welcome_model extends CI_Model{
 	public function getAPIcurrency(): ?array
 	{
 		$url="https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5";
-		$json=json_decode(file_get_contents($url), true);
+		$json=@json_decode(file_get_contents($url), true);
+		if(empty($json)){
+			return NULL;
+		}
 		///[ccy] => USD [base_ccy] => UAH [buy] => 25.90000 [sale] => 26.25000
 		return $json;		 
  	}

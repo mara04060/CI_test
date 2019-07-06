@@ -42,19 +42,28 @@ class Welcome extends CI_Controller {
 		/* */
 		if(empty( $data['content'] = $this->welcome_model->getCache('currency') ))
 		{
-			//$data['content']=$this->welcome_model->getCurrency(2);        // Read in DataBase 
-			$json=$this->welcome_model->getAPIcurrency();					// Read in JSON
-			$data['content']=$this->welcome_model->getContentInJSON($json); // Read in JSON
+			
+			if( ($json=$this->welcome_model->getAPIcurrency() ) )				// Read in JSON
+			{
+				$data['content']=$this->welcome_model->getContentInJSON($json); // Read in JSON
+			}					
+			else{
+				$data['content']=$this->welcome_model->getCurrency();        // Read in DataBase n- rows
+			}
 			$this->welcome_model->setCache('currency', $data['content']);
 		}
 
 		if(empty( $data['json'] = $this->welcome_model->getCache('json') ))
 		{
-			$data['json'] = $this->welcome_model->getAPIcurrency();
+			if($data['json'] = $this->welcome_model->getAPIcurrency())
+			{
 			$this->welcome_model->setCache('json', $data['json']);
 			//Каждое получение курсов вaлют записывть в БД?
 			//Наверное имелось ввиду раз в сутки!!! ??? 
+			//Лучше наверное перед вставкой проверять на уникальность
+			//...если это не сильно будет напрягать БД
 			$this->welcome_model->toCurrencyTable($data['json']);
+			}
 			
 		}
 		
