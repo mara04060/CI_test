@@ -13,16 +13,21 @@ class Welcome_model extends CI_Model{
 	}
 	public function setCache(string $name_cache = 'content', $data_content )
 	{
-		$this->cache->memcached->save($name_cache, $data_content, 10); //10 min. = 600sec cach is life
+		$this->cache->memcached->save($name_cache, $data_content, 600); //10 min. = 600sec cach is life
 	}
 	
 	/* Function work Database Currency */
 	public function getCurrency(): ?array
 	{
-		$query = $this->db->query('SELECT x.`name`, x.`nameBase`, x.`valCurrency`, x.`dateTim` FROM rates x INNER JOIN
+		if($query = $this->db->query('SELECT x.`name`, x.`nameBase`, x.`valCurrency`, x.`dateTim` FROM rates x INNER JOIN
 			(SELECT name, max(dateTim) as dateTim FROM rates GROUP BY name ) y 
-		ON (y.name = x.name) AND ( y.dateTim= x.dateTim) ORDER BY x.`name` DESC LIMIT 4');
-		return $query->result_array();		
+		ON (y.name = x.name) AND ( y.dateTim= x.dateTim) ORDER BY x.`name` DESC LIMIT 4'))
+		{
+			return $query->result_array();
+		}else{
+			return null;
+		}
+				
 	}
 	public function setCurrency(array $newCurrency) 
 	{
