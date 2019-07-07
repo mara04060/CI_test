@@ -28,7 +28,11 @@ class History extends CI_Controller {
 	{
 		$data['title']="History currency";
 		$data['description']="Full history currency";
+		
 		$data['content']=$this->history_model->getHistory();
+		if(!$data['content']){
+			show_404();
+		}
 		
 		$this->load->view('templates/index',$data);
 	}

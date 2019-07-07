@@ -43,12 +43,12 @@ class Welcome extends CI_Controller {
 		if(empty( $data['content'] = $this->welcome_model->getCache('currency') ))
 		{
 			
-			if( ($json=$this->welcome_model->getAPIcurrency() ) )				// Read in JSON
+			if( $json=$this->welcome_model->getAPIcurrency()  )					// Read in JSON
 			{
 				$data['content']=$this->welcome_model->getContentInJSON($json); // Read in JSON
 			}					
 			else{
-				$data['content']=$this->welcome_model->getCurrency();        // Read in DataBase n- rows
+				$data['content']=$this->welcome_model->getCurrency();        	// Read in DataBase n- rows
 			}
 			$this->welcome_model->setCache('currency', $data['content']);
 		}
@@ -70,6 +70,9 @@ class Welcome extends CI_Controller {
 		$this->load->view('welcome_message',$data);
 	}
 
+
+
+/*
 	private function printCurrency(string $key="content"){
 		if(empty( $data[$key] = $this->welcome_model->getCache('$key') ))
 		{
@@ -77,5 +80,6 @@ class Welcome extends CI_Controller {
 			$this->welcome_model->setCache($key, $data[$key]);
 		}
 	}
+	*/
 
 }

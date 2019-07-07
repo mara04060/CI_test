@@ -95,16 +95,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <body>
 	<div id="container">
 		<div id="body">
-			<p>Currency of <strong><?=date("d-m-y");?></strong></p>
-			<code>
-				<?php 				
+			<h1>Currency <?=date("d-m-y");?></h1>
+			<?php
 				foreach ($content as $key => $value) 
 				{
-						echo " ".$value['name']." = 1 : ".$value['valCurrency']."(".$value['nameBase'].") - ".$value['dateTim']."<br />";
+						echo "<code>".$value['name']." = 1 : ".$value['valCurrency']."(".$value['nameBase'].") - ".$value['dateTim']."</code>";
 				}
 				 ?>
 				 <strong><a href="/history"> Next Currency ...</a></strong>
-			</code>
 		</div>
 
 		<p class="footer">Page rendered in <strong>{elapsed_time}</strong> seconds. <?php echo  (ENVIRONMENT === 'development') ?  'CodeIgniter Version <strong>' . CI_VERSION . '</strong>' : '' ?></p>

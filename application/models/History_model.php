@@ -5,8 +5,8 @@ class History_model extends CI_Model {
 	public function __construct(){
 		$this->load->database();
 	}
-	public function getHistory() ?array {
-		if($query = $this->db->query("SELECT name, nameBase, valCurrency, dateTim FROM `rates` order by `dateTim` DESC " ))
+	public function getHistory(): ?array {
+		if($query = $this->db->query("SELECT name, nameBase, valCurrency, dateTim FROM rates order by dateTim DESC;"))
 		{
 			return $query->result_array();
 		}else{

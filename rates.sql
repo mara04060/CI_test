@@ -24,29 +24,20 @@ CREATE TABLE `rates` (
   `id` int(20) UNSIGNED NOT NULL,
   `name` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
   `nameBase` char(3) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT 'UAH',
-  `valCurrency` float NOT NULL,
-  `dateTim` date NOT NULL COMMENT 'Data'
-) ENGINE=MyISAM DEFAULT CHARSET=cp1251;
+  `valCurrency` float(10,4) NOT NULL,
+  `dateTim` datetime NOT NULL COMMENT 'Data'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Дамп данных таблицы `rates`
 --
 
 INSERT INTO `rates` (`id`, `name`, `nameBase`, `valCurrency`, `dateTim`) VALUES
-(78, 'USD', 'UAH', 25.65, '2019-07-05'),
-(79, 'EUR', 'UAH', 28.8, '2019-07-05'),
-(80, 'RUR', 'UAH', 0.37, '2019-07-05'),
-(81, 'BTC', 'USD', 10425.7, '2019-07-05'),
-(82, 'BTC', 'USD', 10482.8, '2019-07-05'),
-(83, 'BTC', 'USD', 10563.2, '2019-07-05'),
-(84, 'BTC', 'USD', 10597.3, '2019-07-05'),
-(85, 'USD', 'UAH', 25.6, '2019-07-06'),
-(86, 'EUR', 'UAH', 28.7, '2019-07-06'),
-(87, 'RUR', 'UAH', 0.37, '2019-07-06'),
-(88, 'BTC', 'USD', 10916.3, '2019-07-06'),
-(89, 'BTC', 'USD', 10903.7, '2019-07-06'),
-(90, 'BTC', 'USD', 10929.7, '2019-07-06'),
-(91, 'BTC', 'USD', 10935.2, '2019-07-06');
+(1, 'USD', 'UAH', 25.6000, '2019-07-07 19:12:16'),
+(2, 'EUR', 'UAH', 28.7000, '2019-07-07 19:18:56'),
+(3, 'RUR', 'UAH', 0.3700, '2019-07-07 19:18:56'),
+(4, 'BTC', 'USD', 10883.9580, '2019-07-07 19:18:56'),
+(5, 'BTC', 'USD', 10906.6133, '2019-07-07 19:20:47');
 
 --
 -- Индексы сохранённых таблиц
@@ -57,7 +48,7 @@ INSERT INTO `rates` (`id`, `name`, `nameBase`, `valCurrency`, `dateTim`) VALUES
 --
 ALTER TABLE `rates`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`,`valCurrency`,`dateTim`);
+  ADD UNIQUE KEY `name` (`name`,`nameBase`,`valCurrency`);
 
 --
 -- AUTO_INCREMENT для сохранённых таблиц
@@ -67,7 +58,7 @@ ALTER TABLE `rates`
 -- AUTO_INCREMENT для таблицы `rates`
 --
 ALTER TABLE `rates`
-  MODIFY `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `id` int(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

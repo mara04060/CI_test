@@ -19,7 +19,7 @@ class Welcome_model extends CI_Model{
 	/* Function work Database Currency */
 	public function getCurrency(): ?array
 	{
-		if($query = $this->db->query('SELECT x.`name`, x.`nameBase`, x.`valCurrency`, x.`dateTim` FROM rates x INNER JOIN
+		if($query = $this->db->query('SELECT x.name, x.nameBase, x.valCurrency, x.dateTim FROM rates x INNER JOIN
 			(SELECT name, max(dateTim) as dateTim FROM rates GROUP BY name ) y 
 		ON (y.name = x.name) AND ( y.dateTim= x.dateTim) ORDER BY x.`name` DESC LIMIT 4'))
 		{
@@ -31,8 +31,12 @@ class Welcome_model extends CI_Model{
 	}
 	public function setCurrency(array $newCurrency) 
 	{
-		$query=$this->db->query("select name from rates where name=".$this->db->escape($newCurrency['name'])." AND nameBase=".$this->db->escape($newCurrency['nameBase'])." AND valCurrency=".$newCurrency['valCurrency']." AND dateTim= CURRENT_TIME() ;");
-		if(empty( $query->result_array() ) )
+		$query=$this->db->query("select valCurrency from rates where name=".$this->db->escape($newCurrency['name'])." AND nameBase=".$this->db->escape($newCurrency['nameBase'])." order by dateTim DESC LIMIT 1 ;");
+		print "<p />select valCurrency from rates where name=".$this->db->escape($newCurrency['name'])." AND nameBase=".$this->db->escape($newCurrency['nameBase'])." order by dateTim DESC LIMIT 1 ;<p />";
+		print "<br>".$query->row_array()['valCurrency']."";
+		print " = ".(float)$newCurrency['valCurrency']."";
+
+		if( (float)$query->row_array()['valCurrency'] != (float)$newCurrency['valCurrency'] )
 		{
 			if($this->db->query("INSERT IGNORE INTO `rates` (name, nameBase, valCurrency, dateTim) 
 			VALUES (".$this->db->escape($newCurrency['name']).", ".$this->db->escape($newCurrency['nameBase']).", ".$newCurrency['valCurrency']." , CURRENT_TIME() );") )
@@ -81,5 +85,8 @@ public function getContentInJSON($json): ?array
  		return $content;	 
  	}
 
-		
+
+
+
+
 }
